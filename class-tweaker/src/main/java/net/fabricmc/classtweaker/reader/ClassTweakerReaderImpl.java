@@ -240,7 +240,11 @@ public final class ClassTweakerReaderImpl implements ClassTweakerReader {
 		validateClassName(name);
 
 		try {
-			visitor.visitAccessWidener(name).visitClass(access, transitive);
+			AccessWidenerVisitor accessWidenerVisitor = visitor.visitAccessWidener(name);
+
+			if (accessWidenerVisitor != null) {
+				accessWidenerVisitor.visitClass(access, transitive);
+			}
 		} catch (Exception e) {
 			throw error(e.toString());
 		}
@@ -258,7 +262,11 @@ public final class ClassTweakerReaderImpl implements ClassTweakerReader {
 		validateClassName(owner);
 
 		try {
-			visitor.visitAccessWidener(owner).visitField(fieldName, descriptor, access, transitive);
+			AccessWidenerVisitor accessWidenerVisitor = visitor.visitAccessWidener(owner);
+
+			if (accessWidenerVisitor != null) {
+				accessWidenerVisitor.visitField(fieldName, descriptor, access, transitive);
+			}
 		} catch (Exception e) {
 			throw error(e.toString());
 		}
@@ -276,7 +284,11 @@ public final class ClassTweakerReaderImpl implements ClassTweakerReader {
 		validateClassName(owner);
 
 		try {
-			visitor.visitAccessWidener(owner).visitMethod(methodName, descriptor, access, transitive);
+			AccessWidenerVisitor accessWidenerVisitor = visitor.visitAccessWidener(owner);
+
+			if (accessWidenerVisitor != null) {
+				accessWidenerVisitor.visitMethod(methodName, descriptor, access, transitive);
+			}
 		} catch (Exception e) {
 			throw error(e.toString());
 		}

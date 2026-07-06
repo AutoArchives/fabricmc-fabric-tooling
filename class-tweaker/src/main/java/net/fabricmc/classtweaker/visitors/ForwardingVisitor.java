@@ -46,7 +46,11 @@ public class ForwardingVisitor implements ClassTweakerVisitor {
 		List<AccessWidenerVisitor> accessWidenerVisitors = new ArrayList<>(visitors.length);
 
 		for (ClassTweakerVisitor visitor : visitors) {
-			accessWidenerVisitors.add(visitor.visitAccessWidener(owner));
+			AccessWidenerVisitor next = visitor.visitAccessWidener(owner);
+
+			if (next != null) {
+				accessWidenerVisitors.add(next);
+			}
 		}
 
 		return new ForwardingAccessWidenerVisitor(accessWidenerVisitors.toArray(new AccessWidenerVisitor[0]));

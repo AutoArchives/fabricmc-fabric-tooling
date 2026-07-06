@@ -28,7 +28,10 @@ import net.fabricmc.classtweaker.api.visitor.ClassTweakerVisitor;
 class ForwardingVisitorTest {
 	ClassTweakerWriter writer1 = ClassTweakerWriter.create(ClassTweaker.CT_V1);
 	ClassTweakerWriter writer2 = ClassTweakerWriter.create(ClassTweaker.CT_V1);
-	ClassTweakerVisitor visitor = ClassTweakerVisitor.forward(writer1, writer2);
+	ClassTweakerVisitor noop = new ClassTweakerVisitor() {
+		// default impl of ClassTweakerVisitor.visitAccessWidener returns null
+	};
+	ClassTweakerVisitor visitor = ClassTweakerVisitor.forward(writer1, writer2, noop);
 
 	@Test
 	void visitHeader() {

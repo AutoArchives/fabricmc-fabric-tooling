@@ -18,6 +18,7 @@ package net.fabricmc.classtweaker;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.entry;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -557,6 +558,27 @@ public class ClassTweakerReaderTest {
 			parse(testInput);
 
 			assertThat(visitor.getTargets()).hasSize(1);
+		}
+	}
+
+	@Nested
+	class NullAccessWidenerVisitor {
+		@Test
+		void readWithNullAccessWidenerVisitor() throws Exception {
+			String input =
+					"""
+					accessWidener v2 named
+					accessible class Foo
+					accessible method Foo doStuff ()V
+					accessible field Foo thing I
+					""";
+
+			ClassTweakerVisitor visitor = new ClassTweakerVisitor() {
+				// default impl of ClassTweakerVisitor.visitAccessWidener returns null
+			};
+
+			assertThat(visitor.visitAccessWidener("Test")).isNull();
+			assertDoesNotThrow(() -> ClassTweakerReader.create(visitor).read(input.getBytes(StandardCharsets.UTF_8)));
 		}
 	}
 
